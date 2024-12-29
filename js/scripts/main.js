@@ -119,3 +119,59 @@ const listingPokemons = (urlApi) => {
 };
 
 listingPokemons("https://pokeapi.co/api/v2/pokemon?limit=9&offset=0");
+
+// listar todos os tipos de pokemons
+
+const areaTypes = document.getElementById("js-type-area");
+const areaTypesMobile = document.querySelector(".dropdown-select");
+
+axios({
+  method: "GET",
+  url: "https://pokeapi.co/api/v2/type",
+}).then((response) => {
+  const { results } = response.data;
+
+  results.forEach((type, index) => {
+    if (index < 18) {
+      const itemType = document.createElement("li");
+      areaTypes.appendChild(itemType);
+
+      const buttonType = document.createElement("button");
+      buttonType.classList = `type-filter ${type.name}`;
+      itemType.appendChild(buttonType);
+
+      const iconType = document.createElement("div");
+      iconType.classList = "icon";
+      buttonType.appendChild(iconType);
+
+      const imgType = document.createElement("img");
+      imgType.setAttribute("src", `./img/icon-types/${type.name}.svg`);
+      iconType.appendChild(imgType);
+
+      const nameType = document.createElement("span");
+      nameType.textContent = `${firstLetterUperCase(type.name)}`;
+      buttonType.appendChild(nameType);
+
+      // Select Mobile
+
+      const itemTypeMobile = document.createElement("li");
+      areaTypesMobile.appendChild(itemTypeMobile);
+
+      const buttonTypeMobile = document.createElement("button");
+      buttonTypeMobile.classList = `type-filter ${type.name}`;
+      itemTypeMobile.appendChild(buttonTypeMobile);
+
+      const iconTypeMobile = document.createElement("div");
+      iconTypeMobile.classList = "icon";
+      buttonTypeMobile.appendChild(iconTypeMobile);
+
+      const imgTypeMobile = document.createElement("img");
+      imgTypeMobile.setAttribute("src", `./img/icon-types/${type.name}.svg`);
+      iconTypeMobile.appendChild(imgTypeMobile);
+
+      const nameTypeMobile = document.createElement("span");
+      nameTypeMobile.textContent = `${firstLetterUperCase(type.name)}`;
+      buttonTypeMobile.appendChild(nameTypeMobile);
+    }
+  });
+});
