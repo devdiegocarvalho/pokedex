@@ -9,6 +9,7 @@ var slide_hero = new Swiper(".slide-hero", {
 const html = document.documentElement;
 const btnDropdownSelect = document.querySelector(".js-open-select-custom");
 const areaPokemons = document.getElementById("js-list-pokemons");
+const countPokemons = document.getElementById("js-count-pokemons");
 
 const firstLetterUperCase = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -75,8 +76,6 @@ const listingPokemons = (urlApi) => {
     method: "GET",
     url: urlApi,
   }).then((response) => {
-    const countPokemons = document.getElementById("js-count-pokemons");
-
     const { results, next, count } = response.data;
 
     countPokemons.innerText = count;
@@ -138,6 +137,7 @@ axios({
 
       const buttonType = document.createElement("button");
       buttonType.classList = `type-filter ${type.name}`;
+      buttonType.setAttribute("code-type", index + 1);
       itemType.appendChild(buttonType);
 
       const iconType = document.createElement("div");
@@ -159,6 +159,7 @@ axios({
 
       const buttonTypeMobile = document.createElement("button");
       buttonTypeMobile.classList = `type-filter ${type.name}`;
+      buttonTypeMobile.setAttribute("code-type", index + 1);
       itemTypeMobile.appendChild(buttonTypeMobile);
 
       const iconTypeMobile = document.createElement("div");
@@ -172,6 +173,12 @@ axios({
       const nameTypeMobile = document.createElement("span");
       nameTypeMobile.textContent = `${firstLetterUperCase(type.name)}`;
       buttonTypeMobile.appendChild(nameTypeMobile);
+
+      const allTypes = document.querySelectorAll(".type-filter");
+
+      allTypes.forEach((button) => {
+        button.addEventListener("click", filterByTypes);
+      });
     }
   });
 });
@@ -191,3 +198,27 @@ const showLoadPokemon = () => {
 };
 
 bntLoadMore.addEventListener("click", showLoadPokemon);
+
+// Type filter
+
+function filterByTypes() {
+  let idPokemon = this.getAttribute("code-type");
+
+  const allTypes = document.querySelectorAll(".type-filter");
+  const btnLoadMore = document.getElementById("js-btn-load-more");
+
+  allTypes.forEach((type) => {
+    type.classList.remove("active");
+  });
+
+  this.classList.add("active");
+  areaPokemons.innerHTML = "";
+  btnLoadMore.style.display = "none";
+
+  axios({
+    method: "GET",
+    url: `https://pokeapi.co/api/v2/type/${idPokemon}`,
+  }).then((response) => {
+    countPokemons.textContent = response.data.pokemon.length;
+  });
+}
