@@ -215,10 +215,65 @@ function filterByTypes() {
   areaPokemons.innerHTML = "";
   btnLoadMore.style.display = "none";
 
-  axios({
-    method: "GET",
-    url: `https://pokeapi.co/api/v2/type/${idPokemon}`,
-  }).then((response) => {
-    countPokemons.textContent = response.data.pokemon.length;
+  const sectionPokemons = document.querySelector(".s-all-info-pokemons");
+  const topSection = sectionPokemons.offsetTop;
+
+  window.scrollTo({
+    top: topSection + 288,
+    behavior: "smooth",
   });
+
+  if (idPokemon) {
+    axios({
+      method: "GET",
+      url: `https://pokeapi.co/api/v2/type/${idPokemon}`,
+    }).then((response) => {
+      const { pokemon } = response.data;
+
+      countPokemons.textContent = pokemon.length;
+
+      pokemon.forEach((pok) => {
+        const { url } = pok.pokemon;
+
+        axios({
+          method: "GET",
+          url: `${url}`,
+        }).then((response) => {
+          const { id, name, sprites, types } = response.data;
+
+          const infoCard = {
+            code: id,
+            nome: name,
+            image: sprites.other.dream_world.front_default,
+            type: types[0].type.name,
+          };
+
+          if (infoCard.image) {
+            createCardPokemon(
+              infoCard.code,
+              infoCard.type,
+              infoCard.nome,
+              infoCard.image
+            );
+          }
+
+          const cardsPokemon = document.querySelectorAll(
+            ".js-open-details-pokemon"
+          );
+          const closeModal = document.querySelectorAll(
+            ".js-close-details-pokemon"
+          );
+
+          cardsPokemon.forEach(openDetailsPokemon);
+          closeModal.forEach(targetModal);
+        });
+      });
+    });
+  } else {
+    areaPokemons.innerHTML = "";
+
+    listingPokemons("https://pokeapi.co/api/v2/pokemon?limit=9&offset=0");
+
+    btnLoadMore.style.display = "block";
+  }
 }
