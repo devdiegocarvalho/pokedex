@@ -277,3 +277,65 @@ function filterByTypes() {
     btnLoadMore.style.display = "block";
   }
 }
+
+// Seach Pokemons
+
+const btnSearch = document.getElementById("js-btn-search");
+const inputSearch = document.getElementById("js-input-search");
+
+const searchPokemon = () => {
+  let valueInput = inputSearch.value.toLowerCase();
+  const typeFilter = document.querySelectorAll(".type-filter");
+
+  typeFilter.forEach((type) => {
+    type.classList.remove("active");
+  });
+
+  axios({
+    method: "GET",
+    url: `https://pokeapi.co/api/v2/pokemon/${valueInput}`,
+  })
+    .then((response) => {
+      areaPokemons.innerHTML = "";
+      bntLoadMore.style.display = "none";
+      countPokemons.textContent = 1;
+
+      const { id, name, sprites, types } = response.data;
+
+      const infoCard = {
+        code: id,
+        nome: name,
+        image: sprites.other.dream_world.front_default,
+        type: types[0].type.name,
+      };
+
+      createCardPokemon(
+        infoCard.code,
+        infoCard.type,
+        infoCard.nome,
+        infoCard.image
+      );
+
+      const cardsPokemon = document.querySelectorAll(
+        ".js-open-details-pokemon"
+      );
+      const closeModal = document.querySelectorAll(".js-close-details-pokemon");
+
+      cardsPokemon.forEach(openDetailsPokemon);
+      closeModal.forEach(targetModal);
+    })
+    .catch((error) => {
+      if (error.response) areaPokemons.innerHTML = "";
+      bntLoadMore.style.display = "none";
+      countPokemons.textContent = 0;
+      alert("Não foi encontra nenhum resultado com esta pesquisa!");
+    });
+};
+
+inputSearch.addEventListener("keyup", (event) => {
+  if (event.code === "Enter") {
+    searchPokemon();
+  }
+});
+
+btnSearch.addEventListener("click", searchPokemon);
