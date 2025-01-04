@@ -15,17 +15,38 @@ const firstLetterUperCase = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const openDetailsPokemon = (card) => {
-  card.addEventListener("click", () => {
-    html.classList.add("open-modal");
-  });
-};
+function openDetailsPokemon() {
+  html.classList.add("open-modal");
 
-const targetModal = (modal) => {
-  modal.addEventListener("click", () => {
-    html.classList.remove("open-modal");
-  });
-};
+  let codePokemon = this.getAttribute("code-pokemon");
+  let imagePokemon = this.querySelector(".thumb-img");
+  let iconTypePokemon = this.querySelector(".info .icon img");
+  let namePokemon = this.querySelector(".info h3");
+  let codeStringPokemon = this.querySelector(".info span");
+
+  const modalDetails = document.getElementById("js-modal-details");
+  let iconTypePokemonModal = document.getElementById("js-image-type-modal");
+  const imgPokemonModal = document.getElementById("js-image-pokemon-modal");
+  const namePokemonModal = document.getElementById("js-name-pokemon-modal");
+  const codePokemonModal = document.getElementById("js-code-pokemon-modal");
+
+  modalDetails.setAttribute("typePokemonModal", this.classList[2]);
+  imgPokemonModal.setAttribute("src", imagePokemon.getAttribute("src"));
+  iconTypePokemonModal.setAttribute("src", iconTypePokemon.getAttribute("src"));
+  namePokemonModal.textContent = namePokemon.textContent;
+  codePokemonModal.textContent = codeStringPokemon.textContent;
+
+  // axios({
+  //   method: "GET",
+  //   url: `https://pokeapi.co/api/v2/pokemon/${codePokemon}`,
+  // }).then((response) => {
+  //   console.log(response.data);
+  // });
+}
+
+function closeDetailsPokemon() {
+  html.classList.remove("open-modal");
+}
 
 btnDropdownSelect.addEventListener("click", () => {
   btnDropdownSelect.parentElement.classList.toggle("active");
@@ -34,6 +55,7 @@ btnDropdownSelect.addEventListener("click", () => {
 const createCardPokemon = (code, type, nome, imagePoke) => {
   const card = document.createElement("button");
   card.classList = `card-pokemon js-open-details-pokemon ${type}`;
+  card.setAttribute("code-pokemon", code);
   areaPokemons.appendChild(card);
 
   const image = document.createElement("div");
@@ -110,8 +132,12 @@ const listingPokemons = (urlApi) => {
           ".js-close-details-pokemon"
         );
 
-        cardsPokemon.forEach(openDetailsPokemon);
-        closeModal.forEach(targetModal);
+        cardsPokemon.forEach((card) => {
+          card.addEventListener("click", openDetailsPokemon);
+        });
+        closeModal.forEach((card) => {
+          card.addEventListener("click", closeDetailsPokemon);
+        });
       });
     });
   });
@@ -264,8 +290,12 @@ function filterByTypes() {
             ".js-close-details-pokemon"
           );
 
-          cardsPokemon.forEach(openDetailsPokemon);
-          closeModal.forEach(targetModal);
+          cardsPokemon.forEach((card) => {
+            card.addEventListener("click", openDetailsPokemon);
+          });
+          closeModal.forEach((card) => {
+            card.addEventListener("click", closeDetailsPokemon);
+          });
         });
       });
     });
@@ -321,8 +351,12 @@ const searchPokemon = () => {
       );
       const closeModal = document.querySelectorAll(".js-close-details-pokemon");
 
-      cardsPokemon.forEach(openDetailsPokemon);
-      closeModal.forEach(targetModal);
+      cardsPokemon.forEach((card) => {
+        card.addEventListener("click", openDetailsPokemon);
+      });
+      closeModal.forEach((card) => {
+        card.addEventListener("click", closeDetailsPokemon);
+      });
     })
     .catch((error) => {
       if (error.response) areaPokemons.innerHTML = "";
