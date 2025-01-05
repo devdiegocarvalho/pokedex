@@ -7,10 +7,6 @@
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@5.2.1/swiper.scss"
-    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pokémon</title>
@@ -214,45 +210,25 @@
             <h2 id="js-name-pokemon-modal"></h2>
             <span id="js-code-pokemon-modal"></span>
           </div>
-          <ul class="type">
-            <li>
-              <span class="tag-type grass">Grass</span>
-            </li>
-            <li>
-              <span class="tag-type poison">Poison</span>
-            </li>
-          </ul>
+          <ul class="type" id="js-types-pokemon"></ul>
 
           <ul class="info">
             <li>
               <span>Height</span>
-              <strong>0.7m</strong>
+              <strong id="js-height-pokemon"></strong>
             </li>
             <li>
               <span>HWeight</span>
-              <strong>6.9kg</strong>
+              <strong id="js-weight-pokemon"></strong>
             </li>
             <li>
               <span>Abilities</span>
-              <strong>Overgrow</strong>
+              <strong id="js-main-abilities"></strong>
             </li>
           </ul>
           <div class="weak">
             <h4>Weaknesses</h4>
-            <ul>
-              <li>
-                <span class="tag-type fire">Fire</span>
-              </li>
-              <li>
-                <span class="tag-type psychic">Psychic</span>
-              </li>
-              <li>
-                <span class="tag-type flying">Flying</span>
-              </li>
-              <li>
-                <span class="tag-type ice">Ice</span>
-              </li>
-            </ul>
+            <ul id="js-area-weak"></ul>
           </div>
           <div class="stats">
             <h5>Stats</h5>
@@ -260,7 +236,7 @@
               <div class="item">
                 <span>HP</span>
                 <div class="bar-status">
-                  <div class="bar"></div>
+                  <div class="bar" id="js-stats-hp"></div>
                   <ul class="separator">
                     <li></li>
                     <li></li>
@@ -272,7 +248,7 @@
               <div class="item">
                 <span>Attack</span>
                 <div class="bar-status">
-                  <div class="bar"></div>
+                  <div class="bar" id="js-stats-attack"></div>
                   <ul class="separator">
                     <li></li>
                     <li></li>
@@ -284,7 +260,7 @@
               <div class="item">
                 <span>Defense</span>
                 <div class="bar-status">
-                  <div class="bar"></div>
+                  <div class="bar" id="js-stats-defense"></div>
                   <ul class="separator">
                     <li></li>
                     <li></li>
@@ -296,7 +272,7 @@
               <div class="item">
                 <span>Sp. attack</span>
                 <div class="bar-status">
-                  <div class="bar"></div>
+                  <div class="bar" id="js-stats-special-attack"></div>
                   <ul class="separator">
                     <li></li>
                     <li></li>
@@ -308,7 +284,7 @@
               <div class="item">
                 <span>Sp. defense</span>
                 <div class="bar-status">
-                  <div class="bar"></div>
+                  <div class="bar" id="js-stats-special-defense"></div>
                   <ul class="separator">
                     <li></li>
                     <li></li>
@@ -320,7 +296,7 @@
               <div class="item">
                 <span>Speed</span>
                 <div class="bar-status">
-                  <div class="bar"></div>
+                  <div class="bar" id="js-stats-speed"></div>
                   <ul class="separator">
                     <li></li>
                     <li></li>

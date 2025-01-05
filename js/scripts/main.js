@@ -1,4 +1,4 @@
-// Slide script principal
+// Principal Slide Script
 var slide_hero = new Swiper(".slide-hero", {
   effect: "fade",
   pagination: {
@@ -11,7 +11,7 @@ const btnDropdownSelect = document.querySelector(".js-open-select-custom");
 const areaPokemons = document.getElementById("js-list-pokemons");
 const countPokemons = document.getElementById("js-count-pokemons");
 
-const firstLetterUperCase = (string) => {
+const firstLetterUpperCase = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
@@ -29,6 +29,9 @@ function openDetailsPokemon() {
   const imgPokemonModal = document.getElementById("js-image-pokemon-modal");
   const namePokemonModal = document.getElementById("js-name-pokemon-modal");
   const codePokemonModal = document.getElementById("js-code-pokemon-modal");
+  const heightPokemonModal = document.getElementById("js-height-pokemon");
+  const weightPokemonModal = document.getElementById("js-weight-pokemon");
+  const mainAbPokemonModal = document.getElementById("js-main-abilities");
 
   modalDetails.setAttribute("typePokemonModal", this.classList[2]);
   imgPokemonModal.setAttribute("src", imagePokemon.getAttribute("src"));
@@ -36,12 +39,88 @@ function openDetailsPokemon() {
   namePokemonModal.textContent = namePokemon.textContent;
   codePokemonModal.textContent = codeStringPokemon.textContent;
 
-  // axios({
-  //   method: "GET",
-  //   url: `https://pokeapi.co/api/v2/pokemon/${codePokemon}`,
-  // }).then((response) => {
-  //   console.log(response.data);
-  // });
+  axios({
+    method: "GET",
+    url: `https://pokeapi.co/api/v2/pokemon/${codePokemon}`,
+  }).then((response) => {
+    const data = response.data;
+
+    let infoPokemon = {
+      mainAbilities: firstLetterUpperCase(data.abilities[0].ability.name),
+      types: data.types,
+      weight: data.weight,
+      height: data.height,
+      abilities: data.abilities,
+      stats: data.stats,
+      urlType: data.types[0].type.url,
+    };
+
+    const listingTypesPokemon = () => {
+      const areaTypesModal = document.getElementById("js-types-pokemon");
+
+      areaTypesModal.innerHTML = "";
+
+      let arrayTypes = infoPokemon.types;
+
+      arrayTypes.forEach((itemType) => {
+        let itemList = document.createElement("li");
+        areaTypesModal.appendChild(itemList);
+
+        let spanList = document.createElement("span");
+        spanList.classList = `tag-type ${itemType.type.name}`;
+        spanList.textContent = firstLetterUpperCase(itemType.type.name);
+        itemList.appendChild(spanList);
+      });
+    };
+
+    const listingWeaknesses = () => {
+      const areaWeak = document.getElementById("js-area-weak");
+
+      areaWeak.innerHTML = "";
+
+      axios({
+        method: "GET",
+        url: `${infoPokemon.urlType}`,
+      }).then((response) => {
+        const weaknesses = response.data.damage_relations.double_damage_from;
+
+        weaknesses.forEach((itemType) => {
+          let itemListWeak = document.createElement("li");
+          areaWeak.appendChild(itemListWeak);
+
+          let spanListWeak = document.createElement("span");
+          spanListWeak.classList = `tag-type ${itemType.name}`;
+          spanListWeak.textContent = firstLetterUpperCase(itemType.name);
+          itemListWeak.appendChild(spanListWeak);
+        });
+      });
+    };
+
+    heightPokemonModal.textContent = `${infoPokemon.height / 10}m`;
+    weightPokemonModal.textContent = `${infoPokemon.weight / 10}kg`;
+    mainAbPokemonModal.textContent = infoPokemon.mainAbilities;
+
+    const statsHp = document.getElementById("js-stats-hp");
+    const statsAttack = document.getElementById("js-stats-attack");
+    const statsDefense = document.getElementById("js-stats-defense");
+    const statsSpecialAttack = document.getElementById(
+      "js-stats-special-attack"
+    );
+    const statsSpecialDefense = document.getElementById(
+      "js-stats-special-defense"
+    );
+    const statsSpeed = document.getElementById("js-stats-speed");
+
+    statsHp.style.width = `${infoPokemon.stats[0].base_stat}%`;
+    statsAttack.style.width = `${infoPokemon.stats[1].base_stat}%`;
+    statsDefense.style.width = `${infoPokemon.stats[2].base_stat}%`;
+    statsSpecialAttack.style.width = `${infoPokemon.stats[3].base_stat}%`;
+    statsSpecialDefense.style.width = `${infoPokemon.stats[4].base_stat}%`;
+    statsSpeed.style.width = `${infoPokemon.stats[5].base_stat}%`;
+
+    listingTypesPokemon();
+    listingWeaknesses();
+  });
 }
 
 function closeDetailsPokemon() {
@@ -81,7 +160,7 @@ const createCardPokemon = (code, type, nome, imagePoke) => {
   infoTextPokemon.appendChild(codePokemon);
 
   const namePokemon = document.createElement("h3");
-  namePokemon.textContent = firstLetterUperCase(nome);
+  namePokemon.textContent = firstLetterUpperCase(nome);
   infoTextPokemon.appendChild(namePokemon);
 
   const areaIcon = document.createElement("div");
@@ -145,7 +224,7 @@ const listingPokemons = (urlApi) => {
 
 listingPokemons("https://pokeapi.co/api/v2/pokemon?limit=9&offset=0");
 
-// listar todos os tipos de pokemons
+// List All Types of Pokemons
 
 const areaTypes = document.getElementById("js-type-area");
 const areaTypesMobile = document.querySelector(".dropdown-select");
@@ -175,7 +254,7 @@ axios({
       iconType.appendChild(imgType);
 
       const nameType = document.createElement("span");
-      nameType.textContent = `${firstLetterUperCase(type.name)}`;
+      nameType.textContent = `${firstLetterUpperCase(type.name)}`;
       buttonType.appendChild(nameType);
 
       // Select Mobile
@@ -197,7 +276,7 @@ axios({
       iconTypeMobile.appendChild(imgTypeMobile);
 
       const nameTypeMobile = document.createElement("span");
-      nameTypeMobile.textContent = `${firstLetterUperCase(type.name)}`;
+      nameTypeMobile.textContent = `${firstLetterUpperCase(type.name)}`;
       buttonTypeMobile.appendChild(nameTypeMobile);
 
       const allTypes = document.querySelectorAll(".type-filter");
@@ -225,7 +304,7 @@ const showLoadPokemon = () => {
 
 bntLoadMore.addEventListener("click", showLoadPokemon);
 
-// Type filter
+// Type Filter
 
 function filterByTypes() {
   let idPokemon = this.getAttribute("code-type");
