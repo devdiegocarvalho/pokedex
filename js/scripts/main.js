@@ -13,6 +13,7 @@ const html = document.documentElement;
 const btnDropdownSelect = document.querySelector(".js-open-select-custom");
 const areaPokemons = document.getElementById("js-list-pokemons");
 const countPokemons = document.getElementById("js-count-pokemons");
+const msgNotFound = document.querySelector(".not-found");
 
 const firstLetterUpperCase = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -322,6 +323,8 @@ function filterByTypes() {
   this.classList.add("active");
   areaPokemons.innerHTML = "";
   btnLoadMore.style.display = "none";
+  msgNotFound.style.display = "none";
+  inputSearch.value = "";
 
   const sectionPokemons = document.querySelector(".s-all-info-pokemons");
   const topSection = sectionPokemons.offsetTop;
@@ -453,7 +456,7 @@ const searchPokemon = () => {
       if (error.response) areaPokemons.innerHTML = "";
       bntLoadMore.style.display = "none";
       countPokemons.textContent = 0;
-      alert("Não foi encontra nenhum resultado com esta pesquisa!");
+      msgNotFound.style.display = "flex";
     });
 };
 
