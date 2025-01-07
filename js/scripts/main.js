@@ -4,6 +4,9 @@ var slide_hero = new Swiper(".slide-hero", {
   pagination: {
     el: ".slide-hero .main-area .area-explore .swiper-pagination",
   },
+  autoplay: {
+    delay: 6000,
+  },
 });
 
 const html = document.documentElement;
@@ -391,6 +394,15 @@ function filterByTypes() {
 
 const btnSearch = document.getElementById("js-btn-search");
 const inputSearch = document.getElementById("js-input-search");
+
+inputSearch.addEventListener("keyup", () => {
+  if (inputSearch.value !== "") {
+    btnSearch.classList.add("active");
+    return;
+  }
+
+  btnSearch.classList.remove("active");
+});
 
 const searchPokemon = () => {
   let valueInput = inputSearch.value.toLowerCase();

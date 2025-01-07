@@ -74,6 +74,7 @@
             max-width: 79.8rem;
             margin: 0 auto;
             margin-top: 12.2rem;
+            animation: floating 5s ease-in-out infinite;
             .lighting {
               position: absolute;
               top: -4.9rem;
@@ -403,5 +404,17 @@
         }
       }
     }
+  }
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(0);
+  }
+  33% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
