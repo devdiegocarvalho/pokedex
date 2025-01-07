@@ -410,6 +410,7 @@ inputSearch.addEventListener("keyup", () => {
 const searchPokemon = () => {
   let valueInput = inputSearch.value.toLowerCase();
   const typeFilter = document.querySelectorAll(".type-filter");
+  msgNotFound.style.display = "none";
 
   typeFilter.forEach((type) => {
     type.classList.remove("active");
