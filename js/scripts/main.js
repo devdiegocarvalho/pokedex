@@ -114,7 +114,6 @@ function openDetailsPokemon() {
       moreAbilities.addEventListener("mouseleave", () => {
         ballonShowMore.classList.remove("active");
       });
-      return;
     }
 
     const listingWeaknesses = () => {
