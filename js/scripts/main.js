@@ -11,9 +11,12 @@ var slide_hero = new Swiper(".slide-hero", {
 
 const html = document.documentElement;
 const btnDropdownSelect = document.querySelector(".js-open-select-custom");
+const msgNotFound = document.querySelector(".not-found");
+const ballonShowMore = document.querySelector(".ballon-show-more");
+const moreAbilities = document.querySelector(".more-abilities");
 const areaPokemons = document.getElementById("js-list-pokemons");
 const countPokemons = document.getElementById("js-count-pokemons");
-const msgNotFound = document.querySelector(".not-found");
+const btnShowMore = document.getElementById("js-btn-show-more");
 
 const firstLetterUpperCase = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -59,6 +62,12 @@ function openDetailsPokemon() {
       urlType: data.types[0].type.url,
     };
 
+    const limitStatsTo100 = (number) => {
+      if (number > 100) {
+        return 100;
+      }
+    };
+
     const listingTypesPokemon = () => {
       const areaTypesModal = document.getElementById("js-types-pokemon");
 
@@ -76,6 +85,37 @@ function openDetailsPokemon() {
         itemList.appendChild(spanList);
       });
     };
+
+    heightPokemonModal.textContent = `${infoPokemon.height / 10}m`;
+    weightPokemonModal.textContent = `${infoPokemon.weight / 10}kg`;
+    mainAbPokemonModal.textContent = infoPokemon.mainAbilities;
+
+    const showBtnShowMore = () => {
+      ballonShowMore.innerHTML = "";
+
+      const talents = infoPokemon.abilities.slice(1);
+
+      talents.forEach((talent) => {
+        const strongShowMore = document.createElement("strong");
+        const nameAbility = talent.ability.name;
+
+        strongShowMore.textContent = firstLetterUpperCase(nameAbility);
+        ballonShowMore.appendChild(strongShowMore);
+      });
+    };
+
+    if (infoPokemon.abilities.length > 1) {
+      moreAbilities.classList.add("active");
+      showBtnShowMore();
+      moreAbilities.addEventListener("mouseenter", () => {
+        ballonShowMore.classList.add("active");
+      });
+
+      moreAbilities.addEventListener("mouseleave", () => {
+        ballonShowMore.classList.remove("active");
+      });
+      return;
+    }
 
     const listingWeaknesses = () => {
       const areaWeak = document.getElementById("js-area-weak");
@@ -100,10 +140,6 @@ function openDetailsPokemon() {
       });
     };
 
-    heightPokemonModal.textContent = `${infoPokemon.height / 10}m`;
-    weightPokemonModal.textContent = `${infoPokemon.weight / 10}kg`;
-    mainAbPokemonModal.textContent = infoPokemon.mainAbilities;
-
     const statsHp = document.getElementById("js-stats-hp");
     const statsAttack = document.getElementById("js-stats-attack");
     const statsDefense = document.getElementById("js-stats-defense");
@@ -115,12 +151,22 @@ function openDetailsPokemon() {
     );
     const statsSpeed = document.getElementById("js-stats-speed");
 
-    statsHp.style.width = `${infoPokemon.stats[0].base_stat}%`;
-    statsAttack.style.width = `${infoPokemon.stats[1].base_stat}%`;
-    statsDefense.style.width = `${infoPokemon.stats[2].base_stat}%`;
-    statsSpecialAttack.style.width = `${infoPokemon.stats[3].base_stat}%`;
-    statsSpecialDefense.style.width = `${infoPokemon.stats[4].base_stat}%`;
-    statsSpeed.style.width = `${infoPokemon.stats[5].base_stat}%`;
+    statsHp.style.width = `${limitStatsTo100(infoPokemon.stats[0].base_stat)}%`;
+    statsAttack.style.width = `${limitStatsTo100(
+      infoPokemon.stats[1].base_stat
+    )}%`;
+    statsDefense.style.width = `${limitStatsTo100(
+      infoPokemon.stats[2].base_stat
+    )}%`;
+    statsSpecialAttack.style.width = `${limitStatsTo100(
+      infoPokemon.stats[3].base_stat
+    )}%`;
+    statsSpecialDefense.style.width = `${limitStatsTo100(
+      infoPokemon.stats[4].base_stat
+    )}%`;
+    statsSpeed.style.width = `${limitStatsTo100(
+      infoPokemon.stats[5].base_stat
+    )}%`;
 
     listingTypesPokemon();
     listingWeaknesses();
